@@ -37,32 +37,26 @@ class BinarySearchTree {
   remove(data) {
     this.rootNode = remover(this.rootNode, data);
 		function remover(node, value) {
-			if(!node) return null;
+			if(!node || (!node.left && !node.right)) return null;
 			if(value < node.data) {
 				node.left = remover(node.left, value);
-				return node;
 			} else if(value > node.data) {
 				node.right = remover(node.right, value);
-				return node;
-				} else {
-					if(!node.left && !node.right) {
-						return null;
-					}
 				}
-				if(!node.left) {
+				else if(!node.left) {
 					node = node.right;
-					return node;
 				}
-				if(!node.right) {
+				else if(!node.right) {
 					node = node.left;
-					return node;
 				}
-				let minRight = node.right;
-				while(minRight.left) {
-					minRight = minRight.left;
+				else {
+					let minRight = node.right;
+					while(minRight.left) {
+						minRight = minRight.left;
+					}
+					node.data = minRight.data;
+					node.right = remover(node.right, minRight.data);
 				}
-				node.data = minRight.data;
-				node.right = remover(node.right, minRight.data);
 				return node;
 		}
 	}
